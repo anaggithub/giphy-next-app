@@ -1,44 +1,82 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Card from "../components/Card";
 import getUserName from "../services";
-import getTendenciesGifs from "../services/gifs";
+import { getTendenciesGifs, getGifs } from "../services/gifs";
 import {
- StyledContainer,
- StyledTitle,
- StyledAutor,
- StyledLink,
- StyledMain,
- StyledSearchBox,
- StyledGifContainer,
+  StyledContainer,
+  StyledTitle,
+  StyledAutor,
+  StyledLink,
+  StyledMain,
+  StyledGifContainer,
 } from "./styles";
- 
-export default function Home({ userName, gifs }) {
 
-  const [selectedGifs, setSelectedGifs] = useState(gifs || []);
+export default function Home({ userName, tendencies }) {
+  const [selectedGifs, setSelectedGifs] = useState(tendencies.data || []);
+  const [searchValue, setSearchValue] = useState("");
+  const [searchError, setSearchError] = useState(false);
+  const [searchErrorMessage, setSearchErrorMessage] = useState("");
 
- return (
-   <StyledContainer>
-     <StyledMain>
-       <StyledTitle>Giphy App</StyledTitle>
-       <StyledAutor>by {userName}</StyledAutor>
-       <StyledLink>
-         Link to <Link href="/detail">Details Page</Link>
-       </StyledLink>
-     </StyledMain>
-     <StyledSearchBox inputPlaceholder="Hola" />
-     <StyledGifContainer>
-       {selectedGifs.length &&
-         selectedGifs.map((gif) => (
-           <Card src={gif.images.original.url} alt={gif.title} key={gif.id} />
-         ))}
-     </StyledGifContainer>
-   </StyledContainer>
- );
+  const handleSubmit = async (e) => {
+    setSearchError(false);
+    setSearchErrorMessage("");
+    e.preventDefault();
+
+    if (searchValue.trim() === "") {
+      setSearchErrorMessage("Ingresa algo para buscar.");
+      setSearchError(true);
+    } else {
+      const gifs = await getGifs();
+      if (gifs.error) {
+        setSearchErrorMessage("Ocurrió un error al intentar obtener los gifs");
+      } else {
+        setSelectedGifs(gifs);
+        setSearchError(false);
+      }
+    }
+  };
+
+  const handleChange = (e) => {
+    setSearchValue(e.target.value);
+    setSearchError(false);
+  };
+
+  return (
+    <StyledContainer>
+      <StyledMain>
+        <StyledTitle>Giphy App</StyledTitle>
+        <StyledAutor>by {userName}</StyledAutor>
+        <StyledLink>
+          Link to <Link href="/detail">Details Page</Link>
+        </StyledLink>
+      </StyledMain>
+      <StyledForm onSubmit={handleSubmit} styles={formStyles}>
+        <Input
+          name="search"
+          type="text"
+          onChange={handleChange}
+          value={searchValue}
+          error={searchError}
+          errorMessage={searchErrorMessage}
+          placeholder="Hiii"
+        />
+        <StyledButton type="primary" styles={buttonStyles}>
+          Buscar
+        </StyledButton>
+      </StyledForm>
+      <StyledGifContainer>
+        {selectedGifs.length &&
+          selectedGifs.map((gif) => (
+            <Card src={gif.images.original.url} alt={gif.title} key={gif.id} />
+          ))}
+      </StyledGifContainer>
+    </StyledContainer>
+  );
 }
- 
+
 Home.getInitialProps = async () => {
- const gifs = await getTendenciesGifs();
- const userName = await getUserName();
- return { gifs, userName };
+  const tendencies = await getTendenciesGifs();
+  const userName = await getUserName();
+  return { tendencies, userName };
 };
