@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Card from "../components/Card";
+import Input from "../components/Input";
 import getUserName from "../services";
 import { getTendenciesGifs, getGifs } from "../services/gifs";
 import {
@@ -10,6 +11,8 @@ import {
   StyledLink,
   StyledMain,
   StyledGifContainer,
+  StyledForm,
+  StyledButton,
 } from "./styles";
 
 export default function Home({ userName, tendencies }) {
@@ -27,8 +30,9 @@ export default function Home({ userName, tendencies }) {
       setSearchErrorMessage("Ingresa algo para buscar.");
       setSearchError(true);
     } else {
-      const gifs = await getGifs();
-      if (gifs.error) {
+      const gifs = await getGifs(searchValue);
+      if (gifs.error || gifs.message) {
+        setSearchError(true);
         setSearchErrorMessage("Ocurrió un error al intentar obtener los gifs");
       } else {
         setSelectedGifs(gifs);
@@ -51,7 +55,7 @@ export default function Home({ userName, tendencies }) {
           Link to <Link href="/detail">Details Page</Link>
         </StyledLink>
       </StyledMain>
-      <StyledForm onSubmit={handleSubmit} styles={formStyles}>
+      <StyledForm onSubmit={handleSubmit}>
         <Input
           name="search"
           type="text"
@@ -61,12 +65,10 @@ export default function Home({ userName, tendencies }) {
           errorMessage={searchErrorMessage}
           placeholder="Hiii"
         />
-        <StyledButton type="primary" styles={buttonStyles}>
-          Buscar
-        </StyledButton>
+        <StyledButton type="primary">Buscar</StyledButton>
       </StyledForm>
       <StyledGifContainer>
-        {selectedGifs.length &&
+        {selectedGifs?.length &&
           selectedGifs.map((gif) => (
             <Card src={gif.images.original.url} alt={gif.title} key={gif.id} />
           ))}
