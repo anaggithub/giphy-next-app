@@ -1,5 +1,11 @@
 import Head from "next/head";
-import { StyledLayout, StyledChildren, StyledFooter } from "./styles.js";
+import Link from "next/link";
+import {
+  StyledLayout,
+  StyledChildren,
+  StyledFooter,
+  StyledNav,
+} from "./styles.js";
 
 const AppLayout = ({ children }) => {
   return (
@@ -11,10 +17,23 @@ const AppLayout = ({ children }) => {
       </Head>
       <StyledLayout>
         <header>
-          <nav>NAVBAR IN PROGRESS LALA </nav>
+          <StyledNav>
+            <ul>
+              <li>
+                <Link href="/">
+                  <a>Home</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/about">
+                  <a>About</a>
+                </Link>
+              </li>
+            </ul>
+          </StyledNav>
         </header>
         <StyledChildren>{children}</StyledChildren>
-        <StyledFooter>Footercito</StyledFooter>
+        <StyledFooter>Powered by NextJS</StyledFooter>
       </StyledLayout>
     </>
   );
