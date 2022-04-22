@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import getUserName from "../services";
@@ -8,7 +7,7 @@ import {
   StyledContainer,
   StyledTitle,
   StyledAutor,
-  StyledLink,
+  StyledInput,
   StyledMain,
   StyledGifContainer,
   StyledForm,
@@ -31,11 +30,11 @@ export default function Home({ userName, tendencies }) {
       setSearchError(true);
     } else {
       const gifs = await getGifs(searchValue);
-      if (gifs.error || gifs.message) {
+      if (gifs.message) {
         setSearchError(true);
         setSearchErrorMessage("Ocurrió un error al intentar obtener los gifs");
       } else {
-        setSelectedGifs(gifs);
+        setSelectedGifs(gifs.data);
         setSearchError(false);
       }
     }
@@ -51,12 +50,9 @@ export default function Home({ userName, tendencies }) {
       <StyledMain>
         <StyledTitle>Giphy App</StyledTitle>
         <StyledAutor>by {userName}</StyledAutor>
-        <StyledLink>
-          Link to <Link href="/detail">Details Page</Link>
-        </StyledLink>
       </StyledMain>
       <StyledForm onSubmit={handleSubmit}>
-        <Input
+        <StyledInput
           name="search"
           type="text"
           onChange={handleChange}
