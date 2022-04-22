@@ -11,8 +11,9 @@ const nextConfig = {
       "media4.giphy.com",
     ],
   },
- };
-  
- module.exports = nextConfig;
+  pageExtensions: ["page.js"],
+};
+
+module.exports = nextConfig;
 
 // images added so Next Images can support gifs from giphy
