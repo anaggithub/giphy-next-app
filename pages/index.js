@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Card from "../components/Card";
-import Input from "../components/Input";
 import getUserName from "../services";
 import { getTendenciesGifs, getGifs } from "../services/gifs";
 import {
@@ -15,7 +15,8 @@ import {
 } from "./styles";
 
 export default function Home({ userName, tendencies }) {
-  const [selectedGifs, setSelectedGifs] = useState(tendencies.data || []);
+  const router = useRouter();
+  const [gifs, setGifs] = useState(tendencies.data || []);
   const [searchValue, setSearchValue] = useState("");
   const [searchError, setSearchError] = useState(false);
   const [searchErrorMessage, setSearchErrorMessage] = useState("");
@@ -34,7 +35,7 @@ export default function Home({ userName, tendencies }) {
         setSearchError(true);
         setSearchErrorMessage("Ocurrió un error al intentar obtener los gifs");
       } else {
-        setSelectedGifs(gifs.data);
+        setGifs(gifs.data);
         setSearchError(false);
       }
     }
@@ -43,6 +44,10 @@ export default function Home({ userName, tendencies }) {
   const handleChange = (e) => {
     setSearchValue(e.target.value);
     setSearchError(false);
+  };
+
+  const handleGifClick = (gifId) => () => {
+    router.push(`/detail/${gifId}`);
   };
 
   return (
@@ -64,17 +69,23 @@ export default function Home({ userName, tendencies }) {
         <StyledButton type="primary">Buscar</StyledButton>
       </StyledForm>
       <StyledGifContainer>
-        {selectedGifs?.length &&
-          selectedGifs.map((gif) => (
-            <Card src={gif.images.original.url} alt={gif.title} key={gif.id} />
+        {gifs?.length &&
+          gifs.map((gif) => (
+            <Card
+              src={gif.images.original.url}
+              alt={gif.title}
+              key={gif.id}
+              handleClick={(e) => handleGifClick(gif.id)(e)}
+            />
           ))}
       </StyledGifContainer>
     </StyledContainer>
   );
 }
 
-Home.getInitialProps = async () => {
+export async function getServerSideProps() {
   const tendencies = await getTendenciesGifs();
   const userName = await getUserName();
-  return { tendencies, userName };
-};
+  const props = { tendencies, userName };
+  return { props };
+}
