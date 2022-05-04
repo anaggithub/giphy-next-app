@@ -35,7 +35,11 @@ export default function Login() {
     <AppLayout showNavbar={false}>
       <StyledForm onSubmit={handleSubmit(handleFormSubmit)}>
         <Input {...register("userName")} placeholder="Nombre de Usuario" />
-        <Input {...register("password")} placeholder="Contraseña" />
+        <Input
+          {...register("password")}
+          type="password"
+          placeholder="Contraseña"
+        />
         <Button type="primary">Iniciar sesion</Button>
       </StyledForm>
     </AppLayout>
