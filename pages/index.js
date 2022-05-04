@@ -1,91 +1,40 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
-import Card from "../components/Card";
-import getUserName from "../services";
-import { getTendenciesGifs, getGifs } from "../services/gifs";
-import {
-  StyledContainer,
-  StyledTitle,
-  StyledAutor,
-  StyledInput,
-  StyledMain,
-  StyledGifContainer,
-  StyledForm,
-  StyledButton,
-} from "./styles";
+import { useForm } from "react-hook-form";
+import { users } from "../database";
+import Button from "../components/Button";
+import Input from "../components/Input";
 
-export default function Home({ userName, tendencies }) {
+export default function Login() {
   const router = useRouter();
-  const [gifs, setGifs] = useState(tendencies.data || []);
-  const [searchValue, setSearchValue] = useState("");
-  const [searchError, setSearchError] = useState(false);
-  const [searchErrorMessage, setSearchErrorMessage] = useState("");
+  const { register, handleSubmit } = useForm();
+  const [data, setData] = useState("");
 
-  const handleSubmit = async (e) => {
-    setSearchError(false);
-    setSearchErrorMessage("");
-    e.preventDefault();
-
-    if (searchValue.trim() === "") {
-      setSearchErrorMessage("Ingresa algo para buscar.");
-      setSearchError(true);
+  const handleFormSubmit = (data) => {
+    console.log(data);
+    const isUserFound = checkUser(data);
+    if (isUserFound) {
+      setData(JSON.stringify(data));
+      router.push(`/home`);
     } else {
-      const gifs = await getGifs(searchValue);
-      if (gifs.message) {
-        setSearchError(true);
-        setSearchErrorMessage("Ocurrió un error al intentar obtener los gifs");
-      } else {
-        setGifs(gifs.data);
-        setSearchError(false);
-      }
+      alert("El usuario ingresado no existe");
     }
   };
 
-  const handleChange = (e) => {
-    setSearchValue(e.target.value);
-    setSearchError(false);
-  };
-
-  const handleGifClick = (gifId) => () => {
-    router.push(`/detail/${gifId}`);
+  const checkUser = (userData) => {
+    const user = users.find(
+      (user) =>
+        user.username === userData.username &&
+        user.password === userData.password
+    );
+    return Boolean(user);
   };
 
   return (
-    <StyledContainer>
-      <StyledMain>
-        <StyledTitle>Giphy App</StyledTitle>
-        <StyledAutor>by {userName}</StyledAutor>
-      </StyledMain>
-      <StyledForm onSubmit={handleSubmit}>
-        <StyledInput
-          name="search"
-          type="text"
-          onChange={handleChange}
-          value={searchValue}
-          error={searchError}
-          errorMessage={searchErrorMessage}
-          placeholder="Hiii"
-        />
-        <StyledButton type="primary">Buscar</StyledButton>
-      </StyledForm>
-      <StyledGifContainer>
-        {gifs?.length &&
-          gifs.map((gif) => (
-            <Card
-              src={gif.images.original.url}
-              alt={gif.title}
-              key={gif.id}
-              handleClick={(e) => handleGifClick(gif.id)(e)}
-            />
-          ))}
-      </StyledGifContainer>
-    </StyledContainer>
+    <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <Input {...register("userName")} placeholder="Nombre de Usuario" />
+      <Input {...register("password")} placeholder="Contraseña" />
+      <Button placeholder="Iniciar sesion" />
+    </form>
   );
-}
-
-export async function getServerSideProps() {
-  const tendencies = await getTendenciesGifs();
-  const userName = await getUserName();
-  const props = { tendencies, userName };
-  return { props };
 }
