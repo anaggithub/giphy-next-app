@@ -74,7 +74,7 @@ export default function Home({ userName, tendencies }) {
           {gifs?.length &&
             gifs.map((gif) => (
               <StyledCard
-                src={gif.images.original.url}
+                src={gif.images.original.webp}
                 alt={gif.title}
                 key={gif.id}
                 handleClick={(e) => handleGifClick(gif.id)(e)}

@@ -8,8 +8,6 @@ export default function GifDetail({ gif }) {
   const router = useRouter();
   const { id } = router.query;
 
-  console.log(gif);
-
   if (gif.message) {
     console.log("Ocurrió un error!", gif.message);
   }
@@ -21,7 +19,7 @@ export default function GifDetail({ gif }) {
           <>
             <StyledTitle>{gif.data.title}</StyledTitle>
             <Card
-              src={gif.data.images.original.url}
+              src={gif.data.images.original.webp}
               alt={gif.data.title}
               key={gif.data.id}
             />
