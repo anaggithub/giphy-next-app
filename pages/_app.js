@@ -1,12 +1,14 @@
 import AppLayout from "../components/AppLayout";
-import "../styles/globals.css";
-
+import { GlobalStyle } from "./styles";
 function MyApp({ Component, pageProps }) {
-  return (
-    <AppLayout>
-      <Component {...pageProps} />
-    </AppLayout>
-  );
+ return (
+   <>
+     <GlobalStyle />
+     <AppLayout>
+       <Component {...pageProps} />
+     </AppLayout>
+   </>
+ );
 }
-
+ 
 export default MyApp;
