@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { theme, fontSizes, fonts } from "../../styles/variables";
+import { theme, fontSizes } from "../../styles/variables";
 
 export const StyledButton = styled.button`
   font-size: ${fontSizes.font16};
