@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { colors, fontSizes } from "../../styles/variables";
-import Button from "../../components/Button";
-import Input from "../../components/Input";
+import Card from "../../components/Card";
 
 export const StyledContainer = styled.div`
   flex-grow: 1;
@@ -27,12 +26,9 @@ export const StyledForm = styled.form`
   justify-content: center;
 `;
 
-export const StyledButton = styled(Button)`
-  //border: solid red 5px;
-`;
-
-export const StyledInput = styled(Input)`
-  //border: solid green 5px;
+export const StyledCard = styled(Card)`
+  width: 230px;
+  height: 180px;
 `;
 
 export const StyledTitle = styled.h1`
