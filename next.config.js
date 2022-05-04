@@ -11,7 +11,6 @@ const nextConfig = {
       "media4.giphy.com",
     ],
   },
-  pageExtensions: ["page.js"],
 };
 
 module.exports = nextConfig;
