@@ -1,15 +1,19 @@
+import React from "react";
 import { StyledContainer, StyledRow, StyledInput, StyledError } from "./styles";
 
-function Input({
-  name,
-  type,
-  value,
-  placeholder,
-  onChange,
-  styles,
-  error = false,
-  errorMessage,
-}) {
+function Input(
+  {
+    name,
+    type,
+    value,
+    placeholder,
+    onChange,
+    error = false,
+    errorMessage,
+    className,
+  },
+  ref
+) {
   return (
     <StyledContainer>
       <StyledRow>
@@ -20,7 +24,8 @@ function Input({
           placeholder={placeholder}
           onChange={onChange}
           error={error}
-          styles={styles}
+          className={className}
+          ref={ref}
         ></StyledInput>
       </StyledRow>
       <StyledRow>
@@ -30,4 +35,4 @@ function Input({
   );
 }
 
-export default Input;
+export default React.forwardRef(Input);

@@ -7,7 +7,6 @@ export const StyledContainer = styled.div`
   justify-content: space-evenly;
   text-align: center;
   width: 100%;
-  ${({ styles }) => styles}
 `;
 
 export const StyledRow = styled.div`

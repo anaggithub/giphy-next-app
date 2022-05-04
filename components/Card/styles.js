@@ -5,5 +5,4 @@ export const StyledCard = styled.img`
  width: 230px;
  height: 180px;
  border-radius: 5px;
- ${({ styles }) => styles}
 `;
