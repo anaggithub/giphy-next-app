@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { users } from "../database";
+import AppLayout from "../components/AppLayout";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import { users } from "../database";
+import { StyledForm } from "./styles";
 
 export default function Login() {
   const router = useRouter();
@@ -11,7 +13,6 @@ export default function Login() {
   const [data, setData] = useState("");
 
   const handleFormSubmit = (data) => {
-    console.log(data);
     const isUserFound = checkUser(data);
     if (isUserFound) {
       setData(JSON.stringify(data));
@@ -24,17 +25,19 @@ export default function Login() {
   const checkUser = (userData) => {
     const user = users.find(
       (user) =>
-        user.username === userData.username &&
+        user.userName === userData.userName &&
         user.password === userData.password
     );
     return Boolean(user);
   };
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)}>
-      <Input {...register("userName")} placeholder="Nombre de Usuario" />
-      <Input {...register("password")} placeholder="Contraseña" />
-      <Button placeholder="Iniciar sesion" />
-    </form>
+    <AppLayout showNavbar={false}>
+      <StyledForm onSubmit={handleSubmit(handleFormSubmit)}>
+        <Input {...register("userName")} placeholder="Nombre de Usuario" />
+        <Input {...register("password")} placeholder="Contraseña" />
+        <Button type="primary">Iniciar sesion</Button>
+      </StyledForm>
+    </AppLayout>
   );
 }

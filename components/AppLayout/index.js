@@ -7,7 +7,7 @@ import {
   StyledNav,
 } from "./styles.js";
 
-const AppLayout = ({ children }) => {
+const AppLayout = ({ children, showNavbar = true }) => {
   return (
     <>
       <Head>
@@ -16,22 +16,24 @@ const AppLayout = ({ children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <StyledLayout>
-        <header>
-          <StyledNav>
-            <ul>
-              <li>
-                <Link href="/">
-                  <a>Home</a>
-                </Link>
-              </li>
-              <li>
-                <Link href="/about">
-                  <a>About</a>
-                </Link>
-              </li>
-            </ul>
-          </StyledNav>
-        </header>
+        {showNavbar && (
+          <header>
+            <StyledNav>
+              <ul>
+                <li>
+                  <Link href="/home">
+                    <a>Home</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about">
+                    <a>About</a>
+                  </Link>
+                </li>
+              </ul>
+            </StyledNav>
+          </header>
+        )}
         <StyledChildren>{children}</StyledChildren>
         <StyledFooter>Powered by NextJS</StyledFooter>
       </StyledLayout>
