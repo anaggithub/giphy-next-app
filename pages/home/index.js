@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import AppLayout from "../../components/AppLayout";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
+import Card from "../../components/Card";
 import getUserName from "../../services";
 import { getTendenciesGifs, getGifs } from "../../services/gifs";
 import {
   StyledContainer,
   StyledTitle,
   StyledAutor,
-  StyledCard,
   StyledMain,
   StyledGifContainer,
   StyledForm,
+  StyledFigure,
 } from "./styles";
 
 export default function Home({ userName, tendencies }) {
@@ -73,12 +74,16 @@ export default function Home({ userName, tendencies }) {
         <StyledGifContainer>
           {gifs?.length &&
             gifs.map((gif) => (
-              <StyledCard
-                src={gif.images.original.webp}
-                alt={gif.title}
-                key={gif.id}
-                handleClick={(e) => handleGifClick(gif.id)(e)}
-              />
+              <StyledFigure>
+                <Card
+                  src={gif.images.original.webp}
+                  height={gif.images.original.height}
+                  width={gif.images.original.width}
+                  alt={gif.title}
+                  key={gif.id}
+                  handleClick={(e) => handleGifClick(gif.id)(e)}
+                />
+              </StyledFigure>
             ))}
         </StyledGifContainer>
       </StyledContainer>
