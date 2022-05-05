@@ -4,24 +4,28 @@ import AppLayout from "../../components/AppLayout";
 import Card from "../../components/Card";
 import { StyledContainer, StyledTitle } from "./styles";
 
-export default function GifDetail({ gif }) {
+export default function GifDetail({ gifData }) {
   const router = useRouter();
   const { id } = router.query;
 
-  if (gif.message) {
+  if (gifData.message) {
     console.log("Ocurrió un error!", gif.message);
   }
+
+  const gif = gifData.data;
 
   return (
     <AppLayout>
       <StyledContainer>
         {Object.keys(gif).length !== 0 && (
           <>
-            <StyledTitle>{gif.data.title}</StyledTitle>
+            <StyledTitle>{gif.title}</StyledTitle>
             <Card
-              src={gif.data.images.original.webp}
-              alt={gif.data.title}
-              key={gif.data.id}
+              src={gif.images.original.webp}
+              height={gif.images.original.height}
+              width={gif.images.original.width}
+              alt={gif.title}
+              key={gif.id}
             />
           </>
         )}
@@ -33,7 +37,7 @@ export default function GifDetail({ gif }) {
 export async function getServerSideProps(context) {
   const { params } = context;
   const { id } = params;
-  const gif = await getGifByID(id);
-  const props = { gif };
+  const gifData = await getGifByID(id);
+  const props = { gifData };
   return { props };
 }
