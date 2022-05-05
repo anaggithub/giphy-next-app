@@ -72,7 +72,7 @@ export default function Home({ userName, tendencies }) {
           <Button type="primary">Buscar</Button>
         </StyledForm>
         <StyledGifContainer>
-          {gifs?.length &&
+          {gifs?.length > 0 &&
             gifs.map((gif) => (
               <StyledFigure>
                 <Card
