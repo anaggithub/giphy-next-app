@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { colors, fontSizes } from "../../styles/variables";
-import Card from "../../components/Card";
 
 export const StyledContainer = styled.div`
   flex-grow: 1;
@@ -26,11 +25,6 @@ export const StyledForm = styled.form`
   justify-content: center;
 `;
 
-export const StyledCard = styled(Card)`
-  width: 230px;
-  height: 180px;
-`;
-
 export const StyledTitle = styled.h1`
   display: flex;
   flex-direction: column;
@@ -44,9 +38,25 @@ export const StyledAutor = styled.h2`
 `;
 
 export const StyledGifContainer = styled.div`
-  margin-top: 30px;
-  width: auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  margin-top: 50px;
+  column-count: 1;
+  column-gap: 10px;
+
+  @media (min-width: 400px) and (max-width: 768px) {
+    column-count: 2;
+    column-gap: 10px;
+  }
+
+  @media (min-width: 768px) {
+    column-count: 3;
+    column-gap: 10px;
+  }
+`;
+
+export const StyledFigure = styled.figure`
+  margin: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  margin-bottom: 10px;
+  break-inside: avoid;
 `;
