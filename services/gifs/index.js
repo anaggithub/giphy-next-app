@@ -1,4 +1,4 @@
-const GIFS_LIMIT = 10;
+const GIFS_LIMIT = 20;
 const API_URLS = {
   TRENDING: `https://api.giphy.com/v1/gifs/trending?&limit=${GIFS_LIMIT}`,
   SEARCH: `https://api.giphy.com/v1/gifs/search?&limit=${GIFS_LIMIT}`,
