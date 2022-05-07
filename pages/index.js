@@ -4,31 +4,30 @@ import { useForm } from "react-hook-form";
 import AppLayout from "../components/AppLayout";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import { users } from "../database";
 import { StyledForm } from "./styles";
+import { loggin } from "../services/auth";
 
 export default function Login() {
   const router = useRouter();
   const { register, handleSubmit } = useForm();
   const [data, setData] = useState("");
 
-  const handleFormSubmit = (data) => {
-    const isUserFound = checkUser(data);
-    if (isUserFound) {
-      setData(JSON.stringify(data));
-      router.push(`/home`);
-    } else {
-      alert("El usuario ingresado no existe");
-    }
-  };
+  const handleFormSubmit = async (data) => {
+    const { userName, password } = data;
+    loggin(userName, password)
+      .then((res) => {
+        console.log("res", res);
+        if (res.status === 200) {
+          setData(JSON.stringify(res.json));
+          router.push(`/home`);
+        } else if (res.status === 404) {
+          alert("El usuario ingresado no existe");
+        } else {
+          alert("Ocurrió un error al iniciar sesión");
+        }
+      })
+      .catch((error) => `Ocurrió un error al iniciar sesión: ${error}`);
 
-  const checkUser = (userData) => {
-    const user = users.find(
-      (user) =>
-        user.userName === userData.userName &&
-        user.password === userData.password
-    );
-    return Boolean(user);
   };
 
   return (
