@@ -4,7 +4,6 @@ import AppLayout from "../../components/AppLayout";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Card from "../../components/Card";
-import getUserName from "../../services";
 import { getTendenciesGifs, getGifs } from "../../services/gifs";
 import {
   StyledContainer,
@@ -16,7 +15,7 @@ import {
   StyledFigure,
 } from "./styles";
 
-export default function Home({ userName, tendencies }) {
+export default function Home({ tendencies }) {
   const router = useRouter();
   const [gifs, setGifs] = useState(tendencies.data || []);
   const [searchValue, setSearchValue] = useState("");
@@ -57,7 +56,7 @@ export default function Home({ userName, tendencies }) {
       <StyledContainer>
         <StyledMain>
           <StyledTitle>Giphy App</StyledTitle>
-          <StyledAutor>by {userName}</StyledAutor>
+          <StyledAutor>by Hadita</StyledAutor>
         </StyledMain>
         <StyledForm onSubmit={handleSubmit}>
           <Input
@@ -93,7 +92,6 @@ export default function Home({ userName, tendencies }) {
 
 export async function getServerSideProps() {
   const tendencies = await getTendenciesGifs();
-  const userName = await getUserName();
-  const props = { tendencies, userName };
+  const props = { tendencies };
   return { props };
 }
