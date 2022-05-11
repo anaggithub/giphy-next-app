@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import AppLayout from "../../components/AppLayout";
 import Button from "../../components/Button";
@@ -14,6 +14,7 @@ import {
   StyledForm,
   StyledFigure,
 } from "./styles";
+import { useSelector } from "react-redux";
 
 export default function Home({ tendencies }) {
   const router = useRouter();
@@ -21,6 +22,8 @@ export default function Home({ tendencies }) {
   const [searchValue, setSearchValue] = useState("");
   const [searchError, setSearchError] = useState(false);
   const [searchErrorMessage, setSearchErrorMessage] = useState("");
+
+  const userLogged = useSelector((state) => state.user.name);
 
   const handleSubmit = async (e) => {
     setSearchError(false);
@@ -50,6 +53,12 @@ export default function Home({ tendencies }) {
   const handleGifClick = (gifId) => () => {
     router.push(`/detail/${gifId}`);
   };
+
+  useEffect(() => {
+    if (!userLogged) {
+      router.push(`/`);
+    }
+  }, []);
 
   return (
     <AppLayout>
@@ -92,6 +101,7 @@ export default function Home({ tendencies }) {
 
 export async function getServerSideProps() {
   const tendencies = await getTendenciesGifs();
+
   const props = { tendencies };
   return { props };
 }
