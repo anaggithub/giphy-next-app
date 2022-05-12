@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import { StyledForm } from "./styles";
 import { useSelector, useDispatch } from "react-redux";
-import { getUserFetch } from "../store";
+import { getUserFetch } from "../slices";
 
 export default function Login() {
   const router = useRouter();

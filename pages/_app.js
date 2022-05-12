@@ -2,7 +2,7 @@ import { GlobalStyle } from "./styles";
 import { Provider } from "react-redux";
 import createSagaMiddleware from "@redux-saga/core";
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "../store";
+import userReducer from "../slices";
 import userSaga from "../sideeffects";
 
 const saga = createSagaMiddleware();

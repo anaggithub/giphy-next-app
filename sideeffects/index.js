@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import { loggin } from "../services/auth";
-import { getUserSuccess } from "../store";
+import { getUserSuccess } from "../slices";
 
 function* workGetUserFetch({ payload }) {
   const { userName, password } = payload;
